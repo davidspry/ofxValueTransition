@@ -24,21 +24,20 @@ void ofxValueTransitionDemo::draw()
     int x = ofGetWidth () * 0.5f;
     int y = ofGetHeight() * 0.5f;
     track.draw(x, y);
-    
-    std::string f;
-    f.append("Oscillator: ");
-    f.append(ofToString(oscillatorTransition.getValueWithoutUpdating(), 2) + "Hz\n\n");
-    f.append("Use keys 1-5 to change the frequency.");
-    const auto bounds = ofBitmapFont().getBoundingBox(f, 0, 0);
-    ofDrawBitmapStringHighlight(f, x - bounds.width / 2, y - bounds.height / 2);
+
+    label = "Oscillator: ";
+    label.append(ofToString(oscillatorTransition.getValueWithoutUpdating(), 2) + "Hz\n\n");
+    label.append("Use keys 1-5 to change the frequency.");
+    const auto bounds = ofBitmapFont().getBoundingBox(label, 0, 0);
+    ofDrawBitmapStringHighlight(label, x - bounds.width / 2, y - bounds.height / 2);
 
     const double hertz = animationTransition.get();
     const double frame = (double) ofGetFrameNum();
     const double radians = hertz * (double) TWO_PI / (double) ofGetFrameRate();
-    const double theta = frame * radians;
+    const double theta = frame * radians - static_cast<int>(frame * radians > TWO_PI) * TWO_PI;
 
-    x = x * 0.5f + trackRadius * std::cosf(theta);
-    y = y * 1.0f + trackRadius * std::sinf(theta);
+    x = x * 0.5 + trackRadius * std::cos(theta);
+    y = y * 1.0 + trackRadius * std::sin(theta);
     index.draw(x, y);
 }
 
@@ -83,8 +82,6 @@ void ofxValueTransitionDemo::initialisePaths()
     const int r = std::min(W, H);
     
     trackRadius = r / 4;
-    indexRadius = r / 16;
-    
     track.setFilled(false);
     track.setStrokeWidth(3.0f);
     track.setColor(ofColor::white);
@@ -95,7 +92,7 @@ void ofxValueTransitionDemo::initialisePaths()
     index.setStrokeWidth(0.0f);
     index.setColor(ofColor::lightPink);
     index.setCircleResolution(256);
-    index.circle(trackRadius, 0.0f, indexRadius);
+    index.circle(trackRadius, 0.0f, r / 16);
 }
 
 void ofxValueTransitionDemo::initialiseSoundStream(const int& sampleRate)

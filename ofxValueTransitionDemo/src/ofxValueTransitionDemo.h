@@ -31,7 +31,7 @@ private:
     ofPath track;
     ofPath index;
     int trackRadius;
-    int indexRadius;
+    std::string label;
 
 private:
     SimpleOscillator oscillator = {110.0f};
