@@ -4,12 +4,6 @@
 #include "ofMain.h"
 #include <type_traits>
 
-#define CLASS_LABEL "[ofxValueTransition]"
-#define FLOAT_ERROR CLASS_LABEL " The type must be float, double, or long double."
-#define VALUE_ERROR CLASS_LABEL " The initial and target values must be positive."
-#define FRAME_ERROR CLASS_LABEL " The refresh rate must be a positive value."
-#define CLOCK_ERROR CLASS_LABEL " The transition time must be a nonnegative value."
-
 /// @brief An object representing a smooth transition between two positive values.
 
 template <typename T>
@@ -20,7 +14,7 @@ public:
 
     ofxValueTransition()
     {
-        static_assert(std::is_floating_point<T>::value, FLOAT_ERROR);
+        static_assert(std::is_floating_point<T>::value, "The type must be float, double, or long double.");
     }
     
     /// @brief Construct a `ValueTransition` with the given output value and the given duration in seconds.
@@ -29,7 +23,7 @@ public:
 
     ofxValueTransition(T targetValue, T durationInSeconds) noexcept(false)
     {
-        static_assert(std::is_floating_point<T>::value, FLOAT_ERROR);
+        static_assert(std::is_floating_point<T>::value, "The type must be float, double, or long double.");
         
         setParametersImmediately(targetValue, durationInSeconds);
     }
@@ -41,7 +35,7 @@ public:
 
     ofxValueTransition(T initialValue, T targetValue, T durationInSeconds) noexcept(false)
     {
-        static_assert(std::is_floating_point<T>::value, FLOAT_ERROR);
+        static_assert(std::is_floating_point<T>::value, "The type must be float, double, or long double.");
         
         setParametersImmediately(initialValue, targetValue, durationInSeconds);
     }
@@ -140,10 +134,10 @@ public:
     void setParametersImmediately(T initialValue, T targetValue, T durationInSeconds) noexcept(false)
     {
         if (!(value > 0.0 && targetValue > 0.0))
-            throw std::invalid_argument(VALUE_ERROR);
+            throw std::invalid_argument("The initial and target values must be positive.");
         
         if (durationInSeconds < 0.0)
-            throw std::invalid_argument(CLOCK_ERROR);
+            throw std::invalid_argument("The transition time must be a nonnegative value.");
         
         value.store(initialValue);
         target.store(targetValue);
@@ -160,7 +154,7 @@ public:
     void setFrameRate(unsigned int framesPerSecond) noexcept(false)
     {
         if (!(framesPerSecond > 0))
-            throw std::invalid_argument(FRAME_ERROR);
+            throw std::invalid_argument("The refresh rate must be a positive value.");
         
         frameRate = framesPerSecond;
     }
