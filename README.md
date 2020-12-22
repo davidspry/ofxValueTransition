@@ -13,7 +13,7 @@ See the included Xcode project, 'ofxValueTransitionDemo', for a simple usage dem
 
 There are several ways to initialise a `ofxValueTransition` object, but they must use a floating point type.
 
-```
+```cpp
 #include "ofxValueTransition.hpp"
 
 ofxValueTransition<float>  transition_float;
@@ -22,7 +22,7 @@ ofxValueTransition<double> transition_double;
 
 An `ofxValueTransition` has a current value, a target value, and a duration value, which can be specified in either seconds or 'frames'. Naturally, these parameters can be set in a constructor and updated during run-time.
 
-```
+```cpp
 // Transition from 1.0 to 5.0 over 2.0 seconds.
 ofxValueTransition<float> transition_a = {1.0, 5.0, 2.0};
 
@@ -40,7 +40,7 @@ transition_a.setTargetValue(25.0);
 
 An `ofxValueTransition` expects to be called continuously at the given 'frame rate', so it's important to specify an appropriate value. In an audio context, the 'frame rate' may be the sample rate (e.g. 44,100Hz). In an animation context, it may be the animation's frame rate (e.g., 60Hz).
 
-```
+```cpp
 ofSetFrameRate(60);
 ofxValueTransition<float> animation_transition;
 animation_transition.setFrameRate(60);
@@ -50,7 +50,7 @@ audio_transition.setFrameRate(44100);
 ```
 
 A transition is updated by successively calling the `get` method, which returns the current output value.
-```
+```cpp
 void draw()
 {
   const auto hertz = transition.get();
